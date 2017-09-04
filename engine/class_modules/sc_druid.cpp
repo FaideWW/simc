@@ -2190,6 +2190,7 @@ struct moonfire_t : public druid_spell_t
       }
 
       base_multiplier *= 1.0 + p -> artifact.twilight_glow.percent();
+
     }
 
     double action_multiplier() const override
@@ -2198,6 +2199,8 @@ struct moonfire_t : public druid_spell_t
 
         if (p()->buff.solar_solstice->check())
             am *= 1.0 + p()->find_spell(252767)->effectN(1).percent();
+
+        am /= 1.0 + p() -> legendary.fury_of_nature;
 
         return am;
     }
@@ -5151,6 +5154,14 @@ struct brambles_t : public druid_spell_t
   {
     background = may_crit = proc = may_miss = true;
   }
+
+  double action_multiplier() const override
+  {
+    double am = druid_spell_t::action_multiplier();
+
+    am /= 1.0 + p() -> legendary.fury_of_nature;
+    return am;
+  }
 };
 
 struct brambles_pulse_t : public druid_spell_t
@@ -5160,6 +5171,14 @@ struct brambles_pulse_t : public druid_spell_t
   {
     background = dual = true;
     aoe = -1;
+  }
+
+  double action_multiplier() const override
+  {
+    double am = druid_spell_t::action_multiplier();
+
+    am /= 1.0 + p() -> legendary.fury_of_nature;
+    return am;
   }
 };
 
@@ -5871,6 +5890,14 @@ struct rage_of_the_sleeper_t : public druid_spell_t
     {
       background = proc = true;
       may_miss = may_crit = false;
+    }
+
+    double action_multiplier() const override
+    {
+      double am = druid_spell_t::action_multiplier();
+
+      am /= 1.0 + p() -> legendary.fury_of_nature;
+      return am;
     }
   };
 
